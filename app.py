@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 import pymysql
-import requests
-from bs4 import BeautifulSoup 
-from lxml import etree 
-from flask_cors import CORS
+#import requests
+#from bs4 import BeautifulSoup 
+#from lxml import etree 
+#from flask_cors import CORS
 
 app=Flask(__name__)
 CORS(app)
@@ -93,43 +93,44 @@ def logout():
 	session.clear()
 	return redirect(url_for("login"))
 
-
-@app.route("/add_clientes", methods=["POST"])
-def add_clientes():
-	if request.method=="POST":
-		cliente=request.form["cliente"]
-		documentoid=request.form["documentoid"]
-		telefono=request.form["telefono"]
-		conexion = pymysql.connect(host="localhost", user="root", password="191132", database="apidolcerossi")
-		cur=conexion.cursor()
-		cur.execute("INSERT INTO clientes (cliente, documentoid, telefono) VALUES (%s, %s, %s)", (cliente, documentoid, telefono))
-		conexion.commit()
-		flash("Venta generada")
-		return render_template("index2.html")
-
-@app.route("/index2")
-def select():
-		conexion = pymysql.connect(host="localhost", user="root", password="191132", database="apidolcerossi")
-		cur=conexion.cursor()
-		cur.execute("SELECT*FROM inventario")
-		resultados= cur.fetchall()
-		ids=[]
-		nombres=[]
-		for fila in resultados:
-			ids.append(fila[0])	
-			nombres.append(fila[1])
-		print(ids,nombres)
-		return render_template("index2.html", nombres = nombres, ids = ids)
-
-@app.route("/dolar")
-def dolar():
-	URL = "http://www.bcv.org.ve/"
-	webpage = requests.get(URL) 
-	soup = BeautifulSoup(webpage.content, "html.parser")
-	dom = etree.HTML(str(soup)) 
-	dolar = dom.xpath('//*[@id="dolar"]/div/div/div[2]/strong')[0].text
-	print(dolar)
-	return jsonify(dolar = str(dolar))
-	
 if __name__=="__main__":
 	app.run(debug=True,port=3000)
+
+#@app.route("/add_clientes", methods=["POST"])
+#def add_clientes():
+	#if request.method=="POST":
+		#cliente=request.form["cliente"]
+		#documentoid=request.form["documentoid"]
+		#telefono=request.form["telefono"]
+		#conexion = pymysql.connect(host="localhost", user="root", password="191132", database="apidolcerossi")
+		#cur=conexion.cursor()
+		#cur.execute("INSERT INTO clientes (cliente, documentoid, telefono) VALUES (%s, %s, %s)", (cliente, documentoid, telefono))
+		#conexion.commit()
+		#flash("Venta generada")
+		#return render_template("index2.html")
+
+#@app.route("/index2")
+#def select():
+		#conexion = pymysql.connect(host="localhost", user="root", password="191132", database="apidolcerossi")
+		#cur=conexion.cursor()
+		#cur.execute("SELECT*FROM inventario")
+		#resultados= cur.fetchall()
+		#ids=[]
+		#nombres=[]
+		#for fila in resultados:
+			#ids.append(fila[0])	
+			#nombres.append(fila[1])
+		#print(ids,nombres)
+		#return render_template("index2.html", nombres = nombres, ids = ids)
+
+#@app.route("/dolar")
+#def dolar():
+	#URL = "http://www.bcv.org.ve/"
+	#webpage = requests.get(URL) 
+	#soup = BeautifulSoup(webpage.content, "html.parser")
+	#dom = etree.HTML(str(soup)) 
+	#dolar = dom.xpath('//*[@id="dolar"]/div/div/div[2]/strong')[0].text
+	#print(dolar)
+	#return jsonify(dolar = str(dolar))
+	
+
