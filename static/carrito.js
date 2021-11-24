@@ -1,4 +1,4 @@
-//no sirve
+//NO SIRVE
 //(()=> {
  //fetch('http://localhost:3000/dolar').then(data => data.json()).then(data => {
     //let dolar = data.dolar
