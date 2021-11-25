@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 import pymysql
-#import requests
-#from bs4 import BeautifulSoup 
-#from lxml import etree 
-#from flask_cors import CORS
+import requests
+from bs4 import BeautifulSoup 
+from lxml import etree 
+from flask_cors import CORS
 
 app=Flask(__name__)
 CORS(app)
@@ -40,12 +40,13 @@ def add_inventarios():
 	if request.method=="POST":
 		productos=request.form["productos"]
 		preciodolar=request.form["preciodolar"]
+		preciobs=request.form["preciobs"]
 		stock=request.form["stock"]
 		conexion = pymysql.connect(host="localhost", user="root", password="191132", database="apidolcerossi")
 		cur=conexion.cursor()
-		cur.execute("INSERT INTO inventario (productos, preciodolar, stock) VALUES (%s, %s, %s)", (productos, preciodolar, stock))
+		cur.execute("INSERT INTO inventario (productos, preciodolar, preciobs, stock) VALUES (%s, %s, %s, %s)", (productos, preciodolar, preciobs, stock))
 		conexion.commit()
-		flash("Agregado al inventario")
+		flash("Producto agregado al inventario")
 		return redirect(url_for("index"))
 
 @app.route("/edit/<idinventarios>")
@@ -85,8 +86,19 @@ def delete_inventarios(id):
 	cur=conexion.cursor()
 	cur.execute("DELETE FROM inventario WHERE id={0}" .format(id))
 	conexion.commit()
-	flash("Contact removed successfully")
+	flash("producto eliminado")
 	return redirect(url_for("index"))
+
+@app.route("/dolar")
+def dolar():
+	URL = "http://www.bcv.org.ve/"
+	webpage = requests.get(URL) 
+	soup = BeautifulSoup(webpage.content, "html.parser")
+	dom = etree.HTML(str(soup)) 
+	dolar = dom.xpath('//*[@id="dolar"]/div/div/div[2]/strong')[0].text
+	print(dolar)
+	return jsonify(dolar = str(dolar))
+	
 
 @app.route("/logout")
 def logout():
@@ -132,5 +144,5 @@ if __name__=="__main__":
 	#dolar = dom.xpath('//*[@id="dolar"]/div/div/div[2]/strong')[0].text
 	#print(dolar)
 	#return jsonify(dolar = str(dolar))
-	
+	#
 
