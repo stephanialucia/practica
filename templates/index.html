@@ -32,6 +32,7 @@
 </div>
 </div>
 <div class="col-md-7">
+<h1>INVENTARIO</h1>
 <table class="table table-striped table-bordered  table-sm">
 	<thead>
 		<tr>
@@ -42,13 +43,13 @@
 			<td>Operacion</td>
 		</tr>
 	</thead>
-	<tbody>
+	<tbody name="INVENTARIO">
 		{% for inventarios in inventario %}
 		<tr>
-			<td>{{ inventarios.1 }}</td>
-			<td>{{ inventarios.2 }}</td>
-			<td>{{ inventarios.4 }}</td>
-			<td>{{ inventarios.5 }}</td>
+			<a href="/{{ ids[loop.index] }}">{{ inventario.1 }}</a>
+			<a href="/{{ ids[loop.index] }}">{{ inventario.2 }}</a>
+			<a href="/{{ ids[loop.index] }}">{{ inventario.4 }}</a>
+			<a href="/{{ ids[loop.index] }}">{{ inventario.5 }}</a>
 			<td>
 				<a href="/edit/{{inventarios.0}}" class="btn btn-secondary">Edit</a>
 				<a href="/delete/{{inventarios.0}}" class="btn btn-danger">Delete</a>
